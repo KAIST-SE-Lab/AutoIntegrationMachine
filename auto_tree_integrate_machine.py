@@ -5,6 +5,11 @@ from Node import Node
 
 
 def parse_attack_tree(integration_config):
+    """
+    Parse attack tree, and integrate trees that has same target.
+    :param integration_config: Configuration file that includes the information of attack tree and a target
+    :return: Dictionary that has key as the target fault, and value as the attack tree.
+    """
     config = open(integration_config, 'r')
     config_lines = config.readlines()
     config.close()
@@ -28,8 +33,20 @@ def parse_attack_tree(integration_config):
 
 
 def integrate_tree(parsedFaultTree, parsedAttackTrees):
+    """
+    Integrate attack tree and fault tree
+    :param parsedFaultTree: The top node of parsed OpenFTA fault tree.
+    :param parsedAttackTrees: Dictionary that has key as the target fault, and value as the attack tree.
+    :return:
+    """
 
     def search_node(start, target):
+        """
+        Search node that has name target
+        :param start: Start node to find.
+        :param target: The target name to find.
+        :return:
+        """
         if start.get_name() == target:
             return start
         else:
