@@ -1,0 +1,63 @@
+fault_tree_integrated.ped
+S NULL 0
+0
+M M1 1
+45 Toxic substance released into the environment
+A A0 2
+M M2 1
+24 Containment system fails
+O O0 2
+B E7B 0
+B E6B 0
+M M3 1
+38 Pipe break: Leakage of toxic substance
+A A1 3
+B E5B 0
+B E4B 0
+M M4 1
+29 Remote shutdown command fails
+O O1 2
+M ATTACK0 1
+39 <<ATTACK>>Remote shutdown command fails
+O O2 2
+M ATTACK1 1
+24 <<ATTACK>>Server Exploit
+A A2 2
+B ATTACK2 0
+M ATTACK3 1
+28 <<ATTACK>>Server Exploitable
+A A3 2
+B ATTACK4 0
+B ATTACK5 0
+M ATTACK6 1
+21 <<ATTACK>>DDOS Attack
+A A4 2
+B ATTACK7 0
+M ATTACK8 1
+28 <<ATTACK>>Server exploitable
+A A5 3
+B ATTACK9 0
+B ATTACK10 0
+B ATTACK11 0
+M ATTACK12 1
+39 <<ATTACK>>Remote shutdown command fails
+O O3 2
+M ATTACK13 1
+24 <<ATTACK>>Server Exploit
+A A6 2
+B ATTACK14 0
+M ATTACK15 1
+28 <<ATTACK>>Server Exploitable
+A A7 2
+B ATTACK16 0
+B ATTACK17 0
+M ATTACK18 1
+21 <<ATTACK>>DDOS Attack
+A A8 2
+B ATTACK19 0
+M ATTACK20 1
+28 <<ATTACK>>Server exploitable
+A A9 3
+B ATTACK21 0
+B ATTACK22 0
+B ATTACK23 0

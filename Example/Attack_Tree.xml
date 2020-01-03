@@ -1,0 +1,46 @@
+<?xml version='1.0'?>
+<adtree>
+	<node refinement="disjunctive">
+		<label>Remote shutdown command fails</label>
+		<node refinement="conjunctive">
+			<label>Server Exploit</label>
+			<node refinement="disjunctive">
+				<label>Attacker runs the exploit</label>
+				<comment>0.5</comment>
+			</node>
+			<node refinement="conjunctive">
+				<label>Server Exploitable</label>
+				<node refinement="conjunctive">
+					<label>Remote DoS vulnerability with IPTables TCP Handling</label>
+					<comment>0.5</comment>
+				</node>
+				<node refinement="conjunctive">
+					<label>The Server O.S. is Linux with Kernel 2.6</label>
+					<comment>0.5</comment>
+				</node>
+			</node>
+		</node>
+		<node refinement="conjunctive">
+			<label>DDOS Attack</label>
+			<node refinement="disjunctive">
+				<label>Attacker runs a DDOS attack</label>
+				<comment>0.5</comment>
+			</node>
+			<node refinement="conjunctive">
+				<label>Server exploitable</label>
+				<node refinement="disjunctive">
+					<label>Bandwidth Consumption Vulnerability</label>
+					<comment>0.5</comment>
+				</node>
+				<node refinement="disjunctive">
+					<label>Server reachable from a &quot;big size network&quot;</label>
+					<comment>0.5</comment>
+				</node>
+				<node refinement="disjunctive">
+					<label>Attacker is the owner of a zombies network</label>
+					<comment>0.5</comment>
+				</node>
+			</node>
+		</node>
+	</node>
+</adtree>

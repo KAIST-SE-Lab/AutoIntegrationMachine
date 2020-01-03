@@ -1,0 +1,18 @@
+E4B;;B ;Automatic protection fails;5.000000e-001;;
+E5B;;B ;Pipe overpressure;5.000000e-001;;
+E6B;;B ;Secondary containment tank fails;5.000000e-001;;
+E7B;;B ;Primary containment tank fails;5.000000e-001;;
+ATTACK2;;B;<<ATTACK>> Attacker runs the exploit;0.5; ;
+ATTACK4;;B;<<ATTACK>> Remote DoS vulnerability with IPTables TCP Handling;0.5; ;
+ATTACK5;;B;<<ATTACK>> The Server O.S. is Linux with Kernel 2.6;0.5; ;
+ATTACK7;;B;<<ATTACK>> Attacker runs a DDOS attack;0.5; ;
+ATTACK9;;B;<<ATTACK>> Bandwidth Consumption Vulnerability;0.5; ;
+ATTACK10;;B;<<ATTACK>> Server reachable from a "big size network";0.5; ;
+ATTACK11;;B;<<ATTACK>> Attacker is the owner of a zombies network;0.5; ;
+ATTACK14;;B;<<ATTACK>> Attacker runs the exploit;0.5; ;
+ATTACK16;;B;<<ATTACK>> Remote DoS vulnerability with IPTables TCP Handling;0.5; ;
+ATTACK17;;B;<<ATTACK>> The Server O.S. is Linux with Kernel 2.6;0.5; ;
+ATTACK19;;B;<<ATTACK>> Attacker runs a DDOS attack;0.5; ;
+ATTACK21;;B;<<ATTACK>> Bandwidth Consumption Vulnerability;0.5; ;
+ATTACK22;;B;<<ATTACK>> Server reachable from a "big size network";0.5; ;
+ATTACK23;;B;<<ATTACK>> Attacker is the owner of a zombies network;0.5; ;

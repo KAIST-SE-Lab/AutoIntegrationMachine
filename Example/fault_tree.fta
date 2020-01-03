@@ -1,0 +1,18 @@
+fault_tree.ped
+S NULL 0
+1 A
+M M1 1 
+45 Toxic substance released into the environment
+A NULL 2 
+M M2 1 
+24 Containment system fails
+O NULL 2 
+B E7B 0 
+B E6B 0 
+M M3 1 
+38 Pipe break: Leakage of toxic substance
+A NULL 3 
+B E5B 0 
+B E4B 0 
+M M4 0 
+29 Remote shutdown command fails
