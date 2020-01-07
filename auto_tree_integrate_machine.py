@@ -88,6 +88,10 @@ def integrate_tree(parsedFaultTree, parsedAttackTrees):
 
 if __name__ == '__main__':
     faultTreeFile_fta = sys.argv[1]
+    faultTreeFile_dirs = sys.argv[1].split('/')[:-1]
+    faultTreeFile_dir = ''
+    for dirs in faultTreeFile_dirs:
+        faultTreeFile_dir += dirs + '/'
     integration_config = sys.argv[2]
 
     parsedAttackTrees = parse_attack_tree(integration_config)
@@ -95,4 +99,4 @@ if __name__ == '__main__':
 
     integrated_tree, integrated_ped = integrate_tree(parsedFaultTree, parsedAttackTrees)
 
-    OpenFTA_parser.create_fta(integrated_tree, integrated_ped, faultTreeFile_fta, faultTreeFile_ped)
+    OpenFTA_parser.create_fta(integrated_tree, integrated_ped, faultTreeFile_fta, faultTreeFile_dir + faultTreeFile_ped)

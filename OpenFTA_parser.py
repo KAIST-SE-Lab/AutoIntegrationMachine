@@ -66,7 +66,12 @@ def create_fta(integrated_tree, ped_line, origin_fta, origin_ped):
     :return:
     """
     new_fta_name = origin_fta.split('.')[0] + '_integrated.fta'
-    new_ped_name = origin_ped.split('.')[0] + '_integrated.ped'
+    ped_file = origin_ped.split('/')
+    new_ped_name = origin_ped.split('/')[-1].split('.')[0] + '_integrated.ped'
+    new_ped_file = ''
+    for dir in ped_file[:-1]:
+        new_ped_file += dir + '/'
+    new_ped_file += new_ped_name
 
     new_fta_file = open(new_fta_name, 'w')
     new_fta_file.write(new_ped_name + '\n')
@@ -90,7 +95,7 @@ def create_fta(integrated_tree, ped_line, origin_fta, origin_ped):
     write_node(integrated_tree)
     new_fta_file.close()
 
-    new_ped_file = open(new_ped_name, 'w')
+    new_ped_file = open(new_ped_file, 'w')
 
     with open(origin_ped, 'r') as origin_file:
         for line in origin_file:
