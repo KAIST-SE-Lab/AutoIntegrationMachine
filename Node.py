@@ -1,16 +1,19 @@
 class Node:
-    def __init__(self, name=None, gate=None, id=None, mother=None):
+    def __init__(self, name=None, gate=None, id=None, mother=None, prob=None):
         """
         Constructor function of class Node
         :param name: The name(description) of the node
         :param gate: The type of the gate that linked with child nodes
         :param id: The id of the node
+        :param mother: mother node
+        :param prob: The probability of the node
         """
         self.name = name
         self.gate = gate
         self.id = id
         self.child = []
         self.mother = mother
+        self.prob = prob
 
     def set_name(self, name):
         """
@@ -56,8 +59,6 @@ class Node:
         :return: The mother of the node
         """
         return self.mother
-
-
 
     def get_id(self):
         """
@@ -114,3 +115,18 @@ class Node:
             if my_child == child:
                 return True
         return False
+
+    def set_prob(self, prob):
+        """
+        Set the probability of the node by given parameter
+        :param prob: The gate that user want to give
+        :return: None
+        """
+        self.prob = prob
+
+    def get_prob(self):
+        """
+        Return the probability of the node
+        :return: The probability of the node
+        """
+        return self.prob

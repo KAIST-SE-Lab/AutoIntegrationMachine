@@ -1,2 +1,1 @@
-Attack_Tree.xml	Remote shutdown command fails
-Attack_Tree.xml	Remote shutdown command fails
+Example/Attack_Tree.xml	Remote shutdown command fails

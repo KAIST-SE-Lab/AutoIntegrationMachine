@@ -3,33 +3,54 @@ import ADTool_parser
 import OpenFTA_parser
 from Node import Node
 
+attackmerger_id = 0
 
-def parse_attack_tree(integration_config):
+def parse_attack_tree(attackTreeFiles, integration_config):
     """
-    Parse attack tree, and integrate trees that has same target.
+    Parse attack trees, and integrate trees that has same target.
+    :param attackTreeFiles: List of the attack tree files
     :param integration_config: Configuration file that includes the information of attack tree and a target
     :return: Dictionary that has key as the target fault, and value as the attack tree.
     """
+    configs = {}
     config = open(integration_config, 'r')
     config_lines = config.readlines()
     config.close()
 
-    integrate_target = {}
     for line in config_lines:
         line = line.split('\t')
+        configs[line[0]] = line[1].rstrip()
 
-        if line[1].rstrip() in integrate_target:
-            integrate_target[line[1].rstrip()].append(ADTool_parser.parse_file(line[0]))
+    parsedAttackTrees = {}
+    for tree in attackTreeFiles:
+        attackTree = ADTool_parser.parse_file(tree)
+        targetFault = configs[tree]
+        if targetFault not in parsedAttackTrees:
+            parsedAttackTrees[targetFault] = []
+        parsedAttackTrees[targetFault].append(attackTree)
+
+    return parsedAttackTrees
+
+
+def attack_integration(parsedAttackTrees):
+    """
+    Integrate trees that has same target
+    :param parsedAttackTrees: Dictionary that has key as the target fault, and value as the attack trees.
+    :return: Dictionary that has key as the target fault, and value as the single attack tree.
+    """
+    for key in parsedAttackTrees:
+        if len(parsedAttackTrees[key]) > 1:
+            global attackmerger_id
+            ans = Node('<<ATTACK>> Attack targeting ' + key, 'O', 'ATTACKMERGER' + str(attackmerger_id))
+            attackmerger_id += 1
+            for tree in parsedAttackTrees[key]:
+                ans.add_child(tree[0])
+                tree[0].set_mother = ans
+            parsedAttackTrees[key] = ans
         else:
-            integrate_target[line[1].rstrip()] = [ADTool_parser.parse_file(line[0])]
+            parsedAttackTrees[key] = parsedAttackTrees[key][0]
 
-    for key in integrate_target:
-        if len(integrate_target[key]) > 1:
-            integrate_target[key] = ADTool_parser.merge_attack_tree(integrate_target[key], '<<ATTACK>> Attack targeting ' + key)
-        else:
-            integrate_target[key] = integrate_target[key][0]
-
-    return integrate_target
+    return parsedAttackTrees
 
 
 def integrate_tree(parsedFaultTree, parsedAttackTrees):
@@ -45,7 +66,7 @@ def integrate_tree(parsedFaultTree, parsedAttackTrees):
         Search node that has name target
         :param start: Start node to find.
         :param target: The target name to find.
-        :return:
+        :return: If the node is find, return the node, otherwise return -1
         """
         if start.get_name() == target:
             return start
@@ -56,12 +77,10 @@ def integrate_tree(parsedFaultTree, parsedAttackTrees):
                     return ans
         return -1
 
-    ped_lines = []
     merge_id = 0
     for key in parsedAttackTrees:
         target_node = search_node(parsedFaultTree, key)
-        target_attack_tree = parsedAttackTrees[key][0]
-        additional_ped_line = parsedAttackTrees[key][1]
+        target_attack_tree = parsedAttackTrees[key]
 
         if target_node.get_numChild() > 0:
             merged_node = Node(target_node.get_name() + '_merged', 'O', 'MERGE' + str(merge_id))
@@ -81,9 +100,7 @@ def integrate_tree(parsedFaultTree, parsedAttackTrees):
                 target_node.add_child(child)
                 child.set_mother = target_node
 
-        ped_lines.extend(additional_ped_line)
-
-    return parsedFaultTree, ped_lines
+    return parsedFaultTree
 
 
 if __name__ == '__main__':
@@ -93,10 +110,10 @@ if __name__ == '__main__':
     for dirs in faultTreeFile_dirs:
         faultTreeFile_dir += dirs + '/'
     integration_config = sys.argv[2]
+    attackTreeFiles = sys.argv[3:]
 
-    parsedAttackTrees = parse_attack_tree(integration_config)
-    parsedFaultTree, faultTreeFile_ped = OpenFTA_parser.parse_file(faultTreeFile_fta)
-
-    integrated_tree, integrated_ped = integrate_tree(parsedFaultTree, parsedAttackTrees)
-
-    OpenFTA_parser.create_fta(integrated_tree, integrated_ped, faultTreeFile_fta, faultTreeFile_dir + faultTreeFile_ped)
+    parsedFaultTree = OpenFTA_parser.parse_file(faultTreeFile_fta)
+    parsedAttackTrees = parse_attack_tree(attackTreeFiles, integration_config)
+    parsedAttackTrees = attack_integration(parsedAttackTrees)
+    integrated_tree = integrate_tree(parsedFaultTree, parsedAttackTrees)
+    OpenFTA_parser.create_fta(integrated_tree, faultTreeFile_fta)

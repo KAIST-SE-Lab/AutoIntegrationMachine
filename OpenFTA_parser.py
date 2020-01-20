@@ -13,10 +13,17 @@ def parse_file(file):
     """
     Parse the ftp file to make class Node
     :param file: Given ftp file to parse
-    :return: The list of nodes that included in the given tool
+    :return: The top node of the tree
     """
     faultTree_fta = open(file, "r")
     faultTreeFile_ped = faultTree_fta.readline().rstrip()
+
+    dirs = file.split('/')[:-1]
+    dir = ''
+    for str in dirs:
+        dir += str + '/'
+
+    pedParsed = parse_ped(dir + faultTreeFile_ped)
     faultTree_fta.readline()
     faultTree_fta.readline()
 
@@ -45,7 +52,9 @@ def parse_file(file):
                     child = parse_node(target)
                     target.add_child(child)
         elif line[0] == 'B' or line[0] == 'U':
-            target = Node(id=line[1], mother=mother)
+            targetName = pedParsed[line[1]][1]
+            targetProb = pedParsed[line[1]][2]
+            target = Node(name=targetName, id=line[1], mother=mother, prob=targetProb)
         else:
             raise OpenFTATypeError()
 
@@ -53,30 +62,43 @@ def parse_file(file):
 
     target_tree = parse_node()
     faultTree_fta.close()
-    return target_tree, faultTreeFile_ped
+    return target_tree
 
 
-def create_fta(integrated_tree, ped_line, origin_fta, origin_ped):
+def parse_ped(pedFile):
+    """
+    Parse ped file to usable form
+    :param pedFile:
+    :return: The dictionary that the key is the id of basic events, and the values are the data for ped file(name, type, probability)
+    """
+    ped = open(pedFile, 'r')
+    pedLines = ped.readlines()
+    ped.close()
+
+    pedParsed = {}
+
+    for line in pedLines:
+        pedData = line.split(';')
+        pedParsed[pedData[0]] = [pedData[2], pedData[3], pedData[4]]
+
+    return pedParsed
+
+
+def create_fta(integrated_tree, origin_fta):
     """
     Create new fta file based on treeList
     :param integrated_tree: Integrated tree
-    :param ped_line: Additional ped lines from attack tree
     :param origin_fta: Original file of fta to get original file name
-    :param origin_ped: Original file of ped to get file name and lines
-    :return:
+    :return: None
     """
     new_fta_name = origin_fta.split('.')[0] + '_integrated.fta'
-    ped_file = origin_ped.split('/')
-    new_ped_name = origin_ped.split('/')[-1].split('.')[0] + '_integrated.ped'
-    new_ped_file = ''
-    for dir in ped_file[:-1]:
-        new_ped_file += dir + '/'
-    new_ped_file += new_ped_name
+    new_ped_name = origin_fta.split('.')[0] + '_integrated.ped'
 
     new_fta_file = open(new_fta_name, 'w')
-    new_fta_file.write(new_ped_name + '\n')
+    new_fta_file.write(new_ped_name.split('/')[-1] + '\n')
     new_fta_file.write('S NULL 0\n')
     new_fta_file.write('0\n')
+    new_ped_file = open(new_ped_name, 'w')
 
     def write_node(node):
         global gate_id
@@ -91,17 +113,8 @@ def create_fta(integrated_tree, ped_line, origin_fta, origin_ped):
                 write_node(node_children[i])
         else:
             new_fta_file.write('B ' + node.get_id() + ' 0\n')
+            new_ped_file.write(node.get_id() + ';;B ;' + node.get_name() + ';' + str(node.get_prob()) + '; ;\n')
 
     write_node(integrated_tree)
     new_fta_file.close()
-
-    new_ped_file = open(new_ped_file, 'w')
-
-    with open(origin_ped, 'r') as origin_file:
-        for line in origin_file:
-            new_ped_file.write(line)
-
-    for line in ped_line:
-        new_ped_file.write(line + '\n')
-
     new_ped_file.close()

@@ -17,9 +17,6 @@ B E4B 0
 M M4 1
 29 Remote shutdown command fails
 O O1 2
-M ATTACK0 1
-39 <<ATTACK>>Remote shutdown command fails
-O O2 2
 M ATTACK1 1
 24 <<ATTACK>>Server Exploit
 A A2 2
@@ -39,25 +36,3 @@ A A5 3
 B ATTACK9 0
 B ATTACK10 0
 B ATTACK11 0
-M ATTACK12 1
-39 <<ATTACK>>Remote shutdown command fails
-O O3 2
-M ATTACK13 1
-24 <<ATTACK>>Server Exploit
-A A6 2
-B ATTACK14 0
-M ATTACK15 1
-28 <<ATTACK>>Server Exploitable
-A A7 2
-B ATTACK16 0
-B ATTACK17 0
-M ATTACK18 1
-21 <<ATTACK>>DDOS Attack
-A A8 2
-B ATTACK19 0
-M ATTACK20 1
-28 <<ATTACK>>Server exploitable
-A A9 3
-B ATTACK21 0
-B ATTACK22 0
-B ATTACK23 0

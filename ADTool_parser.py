@@ -19,7 +19,6 @@ def parse_file(file):
     root = doc.getroot()
     root = root.find("node")
     nodes = []
-    lines = []
 
     def parse_node(node, mother=None):
         """
@@ -51,27 +50,8 @@ def parse_file(file):
 
         if target.get_numChild() == 0:
             probability = node.find('comment').text
-            lines.append(str(target.get_id()) + ';;B;<<ATTACK>> ' + name.rstrip() + ';' + probability + '; ;')
+            target.set_prob(probability)
 
         return target
 
-    return [parse_node(root), lines]
-
-
-def merge_attack_tree(trees, desc):
-    """
-    Merge attack trees that has same target
-    :param trees: List of the trees
-    :param desc: Description of the merged tree
-    :return: Merged tree
-    """
-    global attack_id
-    ans = Node(desc, 'O', 'ATTACK' + str(attack_id))
-    total_ped_lines = []
-    attack_id += 1
-    for tree in trees:
-        ans.add_child(tree[0])
-        tree[0].set_mother = ans
-        total_ped_lines.extend(tree[1])
-
-    return [ans, total_ped_lines]
+    return parse_node(root)
