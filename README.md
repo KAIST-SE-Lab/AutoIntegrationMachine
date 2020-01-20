@@ -1,5 +1,5 @@
 # AutoIntegrationMachine
-Auto Integration Machine that makes fault-attack tree based on fault tree and attack trees.
+Automated integration machine for fault tree and attack trees.
 
 ## Environment
 1. Programming language: Python 3.6
